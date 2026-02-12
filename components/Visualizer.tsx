@@ -73,11 +73,30 @@ const Visualizer: React.FC<VisualizerProps> = ({ onGestureChange, onFpsUpdate })
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
+    // Generate Heart Texture
+    const createHeartTexture = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 128;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return null;
+      
+      ctx.font = "100px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "white";
+      ctx.fillText("♥", 64, 64);
+      
+      const texture = new THREE.CanvasTexture(canvas);
+      return texture;
+    };
+
     const material = new THREE.PointsMaterial({
-      size: 2.2,
+      size: 5.0, // Increased size for visibility of the heart shape
+      map: createHeartTexture(),
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.9,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
